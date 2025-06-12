@@ -5,6 +5,7 @@ for a specified city to Twitter, including a dynamically generated image widget.
 # 1. Standard Library Imports
 import logging
 import os
+import sys # <-- IMPORT SYS MODULE
 import tempfile
 from datetime import datetime, timezone
 
@@ -21,7 +22,6 @@ logging.basicConfig(level=logging.INFO)
 
 # --- Flask App Initialization ---
 app = Flask(__name__)
-# We keep the Cache object in case you want to use it elsewhere, but we won't use it on get_weather.
 cache = Cache(app, config={'CACHE_TYPE': 'simple'}) 
 
 # --- Constants ---
@@ -50,11 +50,21 @@ else:
 
 # --- Helper Functions and Template Filters ---
 def get_env_variable(var_name, critical=True):
-    """Retrieves an environment variable."""
+    """
+    Retrieves an environment variable. If critical and not found,
+    logs a fatal error and exits the application.
+    """
     value = os.environ.get(var_name)
+    # ##################################################################
+    # ## THIS IS THE CRITICAL CHANGE: WE NOW EXIT IMMEDIATELY ON ERROR ##
+    # ##################################################################
     if value is None and critical:
-        raise EnvironmentError(f"Critical env var '{var_name}' not found.")
+        # This will cause the container to crash and print a clear error in the logs
+        logging.critical("FATAL: Critical environment variable '%s' not found.", var_name)
+        sys.exit(f"FATAL: Missing environment variable: {var_name}")
     return value
+
+# ... (The rest of your file is exactly the same) ...
 
 def degrees_to_cardinal(d):
     """Converts wind direction in degrees to a cardinal direction."""
@@ -93,34 +103,30 @@ def weather_icon_filter(weather_main):
     return '&#9729;'
 
 # --- Twitter API Client Initialization ---
+# This block now relies on the get_env_variable function to exit if a key is missing
+CONSUMER_KEY = get_env_variable("TWITTER_API_KEY")
+CONSUMER_SECRET = get_env_variable("TWITTER_API_SECRET")
+ACCESS_TOKEN = get_env_variable("TWITTER_ACCESS_TOKEN")
+ACCESS_TOKEN_SECRET = get_env_variable("TWITTER_ACCESS_TOKEN_SECRET")
+WEATHER_API_KEY = get_env_variable("WEATHER_API_KEY")
+
 try:
-    CONSUMER_KEY = get_env_variable("TWITTER_API_KEY")
-    CONSUMER_SECRET = get_env_variable("TWITTER_API_SECRET")
-    ACCESS_TOKEN = get_env_variable("TWITTER_ACCESS_TOKEN")
-    ACCESS_TOKEN_SECRET = get_env_variable("TWITTER_ACCESS_TOKEN_SECRET")
     auth = tweepy.OAuth1UserHandler(
         CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
     )
     api_v1 = tweepy.API(auth)
     logging.info("Twitter v1.1 client initialized successfully.")
-except (EnvironmentError, Exception) as e:
-    logging.critical("Error initializing Twitter client: %s", e)
-    api_v1 = None
+except Exception as e:
+    logging.critical("Error during Tweepy initialization: %s", e)
+    sys.exit("FATAL: Could not initialize Tweepy client.")
+
 
 # --- Core Functions ---
-# ##################################################################
-# ## CACHING DECORATOR REMOVED FROM THIS FUNCTION                 ##
-# ##################################################################
 def get_weather(city):
     """Fetches current weather data for a city."""
-    try:
-        weather_api_key = get_env_variable("WEATHER_API_KEY")
-    except EnvironmentError:
-        logging.error("WEATHER_API_KEY not found. Cannot fetch weather.")
-        return None
     url = (
         f'https://api.openweathermap.org/data/2.5/weather?q={city},IN'
-        f'&appid={weather_api_key}&units=metric'
+        f'&appid={WEATHER_API_KEY}&units=metric'
     )
     try:
         weather_response = requests.get(url, timeout=10)
