@@ -7,9 +7,14 @@ FROM debian:buster-slim as builder
 # Set an argument for the version to use
 ARG WKHTMLTOX_VERSION=0.12.6-1
 
+# ##################################################################
+# ## THE CHANGE IS HERE: Added 'ca-certificates' to install       ##
+# ## the trusted root SSL certificates for wget to work.          ##
+# ##################################################################
 # Install tools needed to download and extract
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
+    ca-certificates \
     xz-utils \
     && rm -rf /var/lib/apt/lists/*
 
