@@ -1,15 +1,9 @@
 # requirements.txt
-
-# Core Application Packages
 Flask
 tweepy
 requests
-imgkit
 pytz
-
-# Caching and Server
-Flask-Caching
+imgkit
 gunicorn
-
-# For local development .env loading
 python-dotenv
+Flask-Caching

@@ -1,14 +1,6 @@
-# Environment variables
+# .gitignore
 .env
-
-# Python Caching
 __pycache__/
 *.pyc
-
-# Virtual environment
-venv/
-
-# IDE / Editor specific
-.vscode/
-.idea/
-
+*.tmp
+*.png

@@ -1,58 +1,29 @@
-# ##################################################################
-# ## STAGE 1: The "Builder" - Prepares wkhtmltoimage              ##
-# ##################################################################
-# Use a standard Debian image that can download and extract packages
-FROM debian:buster-slim as builder
+# Dockerfile
 
-# Set an argument for the version to use
-ARG WKHTMLTOX_VERSION=0.12.6-1
+# 1. Use an official Python runtime as a parent image
+FROM python:3.11-slim
 
-# ##################################################################
-# ## THE CHANGE IS HERE: Added 'ca-certificates' to install       ##
-# ## the trusted root SSL certificates for wget to work.          ##
-# ##################################################################
-# Install tools needed to download and extract
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    wget \
-    ca-certificates \
-    xz-utils \
-    && rm -rf /var/lib/apt/lists/*
-
-# Download the official package and extract it
-RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/${WKHTMLTOX_VERSION}/wkhtmltox_${WKHTMLTOX_VERSION}.buster_amd64.deb \
-    && dpkg-deb -x wkhtmltox_${WKHTMLTOX_VERSION}.buster_amd64.deb /
-
-
-# ##################################################################
-# ## STAGE 2: The "Final" Image - Our Python App                  ##
-# ##################################################################
-# Start from our desired slim Python image
-FROM python:3.9-slim
-
-# Set the working directory
+# 2. Set the working directory in the container
 WORKDIR /app
 
-# Install only the necessary RUNTIME dependencies for wkhtmltoimage and our app
-# This list is smaller and more reliable
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# 3. Install system dependencies required by wkhtmltoimage
+#    'wkhtmltopdf' package includes 'wkhtmltoimage'
+#    'xvfb' is a virtual framebuffer, often needed for headless rendering
+RUN apt-get update && apt-get install -y \
+    wkhtmltopdf \
     xvfb \
-    libxrender1 \
-    libfontconfig1 \
-    libxext6 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the compiled binaries from the "builder" stage into our final image
-COPY --from=builder /usr/local/bin/wkhtmltoimage /usr/local/bin/wkhtmltoimage
-COPY --from=builder /usr/local/bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf
-
-# Copy our application's requirements file
+# 4. Copy the requirements file and install Python dependencies
 COPY requirements.txt .
-
-# Install Python packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of our application code
+# 5. Copy the rest of your application code into the container
 COPY . .
 
-# Set the final command to run the application
-CMD ["xvfb-run", "gunicorn", "--bind", "0.0.0.0:8080", "--workers", "1", "--threads", "8", "weatherappbot:app"]
+# 6. Expose the port the app runs on
+EXPOSE 8080
+
+# 7. Define the command to run your app using Gunicorn
+#    The PORT environment variable will be automatically set by Cloud Run.
+CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "--workers", "1", "--threads", "8", "--timeout", "0", "app:app"]

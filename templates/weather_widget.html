@@ -1,180 +1,201 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API-Driven Weather Widget</title>
-    <style>
-        /* Embedded Google Fonts: Roboto */
-        /* latin-ext */
-        @font-face {
-            font-family: 'Roboto'; font-style: normal; font-weight: 300; font-display: swap;
-            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmSU5fCRc4EsA.woff2) format('woff2');
-            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-        }
-        /* latin */
-        @font-face {
-            font-family: 'Roboto'; font-style: normal; font-weight: 300; font-display: swap;
-            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmSU5fBBc4.woff2) format('woff2');
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-        }
-        /* latin-ext */
-        @font-face {
-            font-family: 'Roboto'; font-style: normal; font-weight: 400; font-display: swap;
-            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu7GxKCRc4EsA.woff2) format('woff2');
-            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-        }
-        /* latin */
-        @font-face {
-            font-family: 'Roboto'; font-style: normal; font-weight: 400; font-display: swap;
-            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxKBBc4.woff2) format('woff2');
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-        }
-        /* latin-ext */
-        @font-face {
-            font-family: 'Roboto'; font-style: normal; font-weight: 500; font-display: swap;
-            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmEU9fCRc4EsA.woff2) format('woff2');
-            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-        }
-        /* latin */
-        @font-face {
-            font-family: 'Roboto'; font-style: normal; font-weight: 500; font-display: swap;
-            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmEU9fBBc4.woff2) format('woff2');
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-        }
-        /* latin-ext */
-        @font-face {
-            font-family: 'Roboto'; font-style: normal; font-weight: 700; font-display: swap;
-            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlfCRc4EsA.woff2) format('woff2');
-            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-        }
-        /* latin */
-        @font-face {
-            font-family: 'Roboto'; font-style: normal; font-weight: 700; font-display: swap;
-            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlfBBc4.woff2) format('woff2');
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-        }
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>API-Driven Weather Widget</title> 
+    <style> 
+        /* Embedded Google Fonts: Roboto */ 
+        @font-face { 
+            font-family: 'Roboto'; font-style: normal; font-weight: 300; font-display: swap; 
+            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmSU5fCRc4EsA.woff2) format('woff2'); 
+            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; 
+        } 
+        @font-face { 
+            font-family: 'Roboto'; font-style: normal; font-weight: 300; font-display: swap; 
+            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmSU5fBBc4.woff2) format('woff2'); 
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; 
+        } 
+        @font-face { 
+            font-family: 'Roboto'; font-style: normal; font-weight: 400; font-display: swap; 
+            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu7GxKCRc4EsA.woff2) format('woff2'); 
+            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; 
+        } 
+        @font-face { 
+            font-family: 'Roboto'; font-style: normal; font-weight: 400; font-display: swap; 
+            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxKBBc4.woff2) format('woff2'); 
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; 
+        } 
+        @font-face { 
+            font-family: 'Roboto'; font-style: normal; font-weight: 500; font-display: swap; 
+            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmEU9fCRc4EsA.woff2) format('woff2'); 
+            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; 
+        } 
+        @font-face { 
+            font-family: 'Roboto'; font-style: normal; font-weight: 500; font-display: swap; 
+            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmEU9fBBc4.woff2) format('woff2'); 
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; 
+        } 
+        @font-face { 
+            font-family: 'Roboto'; font-style: normal; font-weight: 700; font-display: swap; 
+            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlfCRc4EsA.woff2) format('woff2'); 
+            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; 
+        } 
+        @font-face { 
+            font-family: 'Roboto'; font-style: normal; font-weight: 700; font-display: swap; 
+            src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlfBBc4.woff2) format('woff2'); 
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; 
+        } 
 
-        /* Embedded Tailwind CSS */
-        *,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}
-        h1,h2,p,img,span{margin:0;padding:0}
-        img{max-width:100%;height:auto;display:block}
-        .rounded-xl{border-radius:.75rem}
-        .shadow-lg{box-shadow:0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1)}
-        .overflow-hidden{overflow:hidden}
-        .overflow-x-auto{overflow-x:auto}
-        .border{border-width:1px}
-        .border-collapse{border-collapse:collapse}
-        .border-gray-200{border-color:#e5e7eb}
-        .bg-white{background-color:#fff}
-        .p-6{padding:1.5rem}
-        .p-8{padding:2rem}
-        .text-center{text-align:center}
-        .font-light{font-weight:300}
-        .font-bold{font-weight:700}
-        .leading-none{line-height:1}
-        .text-4xl{font-size:2.25rem;line-height:2.5rem}
-        .text-5xl{font-size:3rem;line-height:1}
-        .text-7xl{font-size:4.5rem;line-height:1}
-        .text-lg{font-size:1.125rem;line-height:1.75rem}
-        .text-xl{font-size:1.25rem;line-height:1.75rem}
-        .text-gray-500{color:#6b7280}
-        .text-gray-600{color:#4b5563}
-        .text-gray-700{color:#374151}
-        .text-gray-800{color:#1f2937}
-        .text-gray-900{color:#111827}
-        .antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-        .grid{display:grid}
-        .grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}
-        .flex{display:flex}
-        .flex-col{flex-direction:column}
-        .items-start{align-items:flex-start}
-        .items-center{align-items:center}
-        .justify-center{justify-content:center}
-        .w-full{width:100%}
-        .mb-2{margin-bottom:.5rem}
-        .mb-4{margin-bottom:1rem}
-        .mb-6{margin-bottom:1.5rem}
-        .mt-2{margin-top:.5rem}
-        .divide-y>:not([hidden])~:not([hidden]){border-top-width:calc(1px * calc(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px * var(--tw-divide-y-reverse))}
-        .divide-gray-200>:not([hidden])~:not([hidden]){border-color:#e5e7eb}
-        @media (min-width:768px){
-            .md\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-            .md\:col-span-1{grid-column:span 1 / span 1}
-            .md\:col-span-2{grid-column:span 2 / span 2}
-            .md\:divide-x>:not([hidden])~:not([hidden]){border-right-width:calc(1px * var(--tw-divide-x-reverse));border-left-width:calc(1px * calc(1 - var(--tw-divide-x-reverse)))}
-            .md\:divide-y-0>:not([hidden])~:not([hidden]){border-top-width:0;border-bottom-width:0}
-            .md\:p-8{padding:2rem}
-        }
+        /* Embedded Tailwind CSS */ 
+        *,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb} 
+        h1,h2,p,img,span,div,table,tbody,tr,td{margin:0;padding:0} 
+        img{max-width:100%;height:auto;display:block} 
+        .rounded-xl{border-radius:.75rem} 
+        .shadow-lg{box-shadow:0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1)} 
+        .overflow-hidden{overflow:hidden} 
+        .overflow-x-auto{overflow-x:auto} 
+        .border{border-width:1px} 
+        .border-t{border-top-width:1px} 
+        .border-collapse{border-collapse:collapse} 
+        .border-gray-200{border-color:#e5e7eb} 
+        .bg-white{background-color:#fff} 
+        .p-6{padding:1.5rem} 
+        .p-8{padding:2rem} 
+        .px-4{padding-left:1rem;padding-right:1rem} 
+        .py-4{padding-top:1rem;padding-bottom:1rem} 
+        .text-center{text-align:center} 
+        .font-light{font-weight:300} 
+        .font-bold{font-weight:700} 
+        .font-medium{font-weight:500} 
+        .leading-none{line-height:1} 
+        .text-sm{font-size:.875rem;line-height:1.25rem} 
+        .text-2xl{font-size:1.5rem;line-height:2rem} 
+        .text-4xl{font-size:2.25rem;line-height:2.5rem} 
+        .text-5xl{font-size:3rem;line-height:1} 
+        .text-7xl{font-size:4.5rem;line-height:1} 
+        .text-lg{font-size:1.125rem;line-height:1.75rem} 
+        .text-xl{font-size:1.25rem;line-height:1.75rem} 
+        .text-blue-500{color:#3b82f6} 
+        .text-gray-500{color:#6b7280} 
+        .text-gray-600{color:#4b5563} 
+        .text-gray-700{color:#374151} 
+        .text-gray-800{color:#1f2937} 
+        .text-gray-900{color:#111827} 
+        .antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale} 
+        .flex{display:flex} 
+        .flex-col{flex-direction:column} 
+        .items-start{align-items:flex-start} 
+        .items-center{align-items:center} 
+        .justify-center{justify-content:center} 
+        .w-full{width:100%} 
+        .mb-2{margin-bottom:.5rem} 
+        .mb-4{margin-bottom:1rem} 
+        .mb-6{margin-bottom:1.5rem} 
+        .mt-1{margin-top:.25rem} 
+        .mt-2{margin-top:.5rem} 
+        .mr-1{margin-right:.25rem} 
+        .my-2{margin-top:.5rem;margin-bottom:.5rem} 
+        .divide-y>:not([hidden])~:not([hidden]){border-top-width:calc(1px * calc(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px * var(--tw-divide-y-reverse))} 
+        .divide-gray-200>:not([hidden])~:not([hidden]){border-color:#e5e7eb} 
+        @media (min-width:768px){ 
+            .md\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))} 
+            .md\:col-span-1{grid-column:span 1 / span 1} 
+            .md\:col-span-2{grid-column:span 2 / span 2} 
+            .md\:divide-x>:not([hidden])~:not([hidden]){border-right-width:calc(1px * var(--tw-divide-x-reverse));border-left-width:calc(1px * calc(1 - var(--tw-divide-x-reverse)))} 
+            .md\:divide-y-0>:not([hidden])~:not([hidden]){border-top-width:0;border-bottom-width:0} 
+            .md\:p-8{padding:2rem} 
+        } 
         
-        /* Custom App Styles */
-        body { 
-            font-family: 'Roboto', 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif; 
-            background-color: #f0f2f5; 
-        }
-        .weather-table td, .weather-table th { border: 1px solid #e5e7eb; padding: 0.75rem 1rem; vertical-align: middle; white-space: nowrap; }
-        .weather-table td:nth-child(odd) { text-align: left; display: flex; align-items: center; gap: 0.5rem; }
-        .weather-table td:nth-child(even) { text-align: right; }
-        .temperature-display { white-space: nowrap; }
-    </style>
-</head>
-<body class="antialiased">
-    <div id="weather-card" class="bg-white rounded-xl shadow-lg overflow-hidden w-full border border-gray-200">
-        <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-200">
-            <div class="p-6 md:p-8 flex flex-col items-center text-center md:col-span-1">
-                <h2 class="text-5xl font-bold text-gray-800 mb-2">{{ weather.name }}</h2>
-                <p class="text-lg text-gray-600 mb-6">{{ weather.dt | format_unix_timestamp(weather.timezone) }}</p>
+        /* Custom App Styles */ 
+        body {  
+            font-family: 'Roboto', 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;  
+            background-color: #f0f2f5;  
+        } 
+        .weather-table td, .weather-table th { border: 1px solid #e5e7eb; padding: 0.75rem 1rem; vertical-align: middle; white-space: nowrap; } 
+        .weather-table td:nth-child(odd) { text-align: left; display: flex; align-items: center; gap: 0.5rem; } 
+        .weather-table td:nth-child(even) { text-align: right; } 
+        .temperature-display { white-space: nowrap; } 
+    </style> 
+</head> 
+<body class="antialiased"> 
+    <div id="weather-card" class="bg-white rounded-xl shadow-lg overflow-hidden w-full border border-gray-200"> 
+        <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-200"> 
+            <div class="p-6 md:p-8 flex flex-col items-center text-center md:col-span-1"> 
+                <h2 class="text-5xl font-bold text-gray-800 mb-2">{{ weather.name }}</h2> 
+                <p class="text-lg text-gray-600 mb-6">{{ weather.dt | format_unix_timestamp(weather.timezone) }}</p> 
                 
-                <div class="flex flex-col items-center justify-center mb-6 w-full">
-                    <span class="text-7xl mb-4">{{ weather.weather[0].main | weather_icon | safe }}</span>
-                    
-                    <div class="flex items-start justify-center temperature-display">
-                        <span class="text-7xl font-light text-gray-900 leading-none">{{ "%.0f"|format(weather.main.temp) }}</span>
-                        <span class="text-4xl text-gray-500 mt-2">&#176;C</span>
-                    </div>
-                </div>
+                <div class="flex flex-col items-center justify-center mb-6 w-full"> 
+                    <span class="text-7xl mb-4">{{ weather.weather[0].main | weather_icon | safe }}</span> 
+                    <div class="flex items-start justify-center temperature-display"> 
+                        <span class="text-7xl font-light text-gray-900 leading-none">{{ "%.0f"|format(weather.main.temp) }}</span> 
+                        <span class="text-4xl text-gray-500 mt-2">&#176;C</span> 
+                    </div> 
+                </div> 
 
-                <p class="text-xl text-gray-700 mb-2">Low : <span id="temp-low">{{ "%.0f"|format(weather.main.temp_min) }}</span> &deg; High : <span id="temp-high">{{ "%.0f"|format(weather.main.temp_max) }}</span> &deg;</p>
-                <p class="text-lg text-gray-600">Feels Like <span id="feels-like">{{ "%.0f"|format(weather.main.feels_like) }}</span> &deg; | <span id="weather-description">{{ weather.weather[0].description.title() }}</span></p>
-            </div>
+                <p class="text-xl text-gray-700 mb-2">Low : <span id="temp-low">{{ "%.0f"|format(weather.main.temp_min) }}</span> &deg; High : <span id="temp-high">{{ "%.0f"|format(weather.main.temp_max) }}</span> &deg;</p> 
+                <p class="text-lg text-gray-600">Feels Like <span id="feels-like">{{ "%.0f"|format(weather.main.feels_like) }}</span> &deg; | <span id="weather-description">{{ weather.weather[0].description.title() }}</span></p> 
+            </div> 
+            <div class="p-6 md:p-8 md:col-span-2 overflow-x-auto"> 
+                <table class="weather-table w-full border-collapse"> 
+                    <tbody> 
+                        <tr> 
+                            <td><span class="text-gray-500">&#128167;</span> Humidity</td> 
+                            <td>{{ weather.main.humidity }} %</td> 
+                            <td><span class="text-gray-500">&#11015;</span> Pressure</td> 
+                            <td>{{ weather.main.pressure }} hPa</td> 
+                        </tr> 
+                        <tr> 
+                            <td><span class="text-gray-500">&#128168;</span> Wind</td> 
+                            <td>{{ "%.2f"|format(weather.wind.speed * 3.6) }} Km/h {{ degrees_to_cardinal(weather.wind.deg) }}</td> 
+                            <td><span class="text-gray-500">&#128166;</span> Precipitation</td> 
+                            <td>{{ (weather.rain['1h'] if weather.rain else '0.00') | string }} mm</td> 
+                        </tr> 
+                        <tr> 
+                            <td><span class="text-gray-500">&#9729;</span> Clouds</td> 
+                            <td>{{ weather.clouds.all }} %</td> 
+                            <td><span class="text-gray-500">&#127783;</span> Rain Chance</td> 
+                            <td>N/A</td> 
+                        </tr> 
+                        <tr> 
+                            <td><span class="text-gray-500">&#128065;</span> Visibility</td> 
+                            <td>{{ "%.0f"|format(weather.visibility / 1000) }} km</td> 
+                            <td><span class="text-gray-500">&#128164;</span> Air Quality</td> 
+                            <td>Moderate</td> 
+                        </tr> 
+                        <tr> 
+                            <td><span class="text-gray-500">&#127749;</span> Sunrise</td> 
+                            <td>{{ weather.sys.sunrise | format_unix_timestamp_time(weather.timezone) }}</td> 
+                            <td><span class="text-gray-500">&#127750;</span> Sunset</td> 
+                            <td>{{ weather.sys.sunset | format_unix_timestamp_time(weather.timezone) }}</td> 
+                        </tr> 
+                    </tbody> 
+                </table> 
+            </div> 
+        </div> 
 
-            <div class="p-6 md:p-8 md:col-span-2 overflow-x-auto">
-                <table class="weather-table w-full border-collapse">
-                    <tbody>
-                        <tr>
-                            <td><span class="text-gray-500">&#128167;</span> Humidity</td>
-                            <td>{{ weather.main.humidity }} %</td>
-                            <td><span class="text-gray-500">&#11015;</span> Pressure</td>
-                            <td>{{ weather.main.pressure }} hPa</td>
-                        </tr>
-                        <tr>
-                            <td><span class="text-gray-500">&#128168;</span> Wind</td>
-                            <td>{{ "%.2f"|format(weather.wind.speed * 3.6) }} Km/h {{ degrees_to_cardinal(weather.wind.deg) }}</td>
-                            <td><span class="text-gray-500">&#128166;</span> Precipitation</td>
-                            <td>{{ (weather.rain['1h'] if weather.rain else '0.00') | string }} mm</td>
-                        </tr>
-                        <tr>
-                            <td><span class="text-gray-500">&#9729;</span> Clouds</td>
-                            <td>{{ weather.clouds.all }} %</td>
-                            <td><span class="text-gray-500">&#127783;</span> Rain Chance</td>
-                            <td>N/A</td>
-                        </tr>
-                        <tr>
-                            <td><span class="text-gray-500">&#128065;</span> Visibility</td>
-                            <td>{{ "%.0f"|format(weather.visibility / 1000) }} km</td>
-                            <td><span class="text-gray-500">&#128164;</span> Air Quality</td>
-                            <td>Moderate</td>
-                        </tr>
-                        <tr>
-                            <td><span class="text-gray-500">&#127749;</span> Sunrise</td>
-                            <td>{{ weather.sys.sunrise | format_unix_timestamp_time(weather.timezone) }}</td>
-                            <td><span class="text-gray-500">&#127750;</span> Sunset</td>
-                            <td>{{ weather.sys.sunset | format_unix_timestamp_time(weather.timezone) }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</body>
+        <div class="border-t border-gray-200 px-4 py-4"> 
+            <h3 class="font-bold text-center text-gray-800 mb-4">Hourly Forecast</h3> 
+            <table style="width: 100%; border-collapse: collapse;"> 
+                <tbody> 
+                    <tr class="text-center"> 
+                        {% for item in forecast.list[:5] %} 
+                        <td style="vertical-align: top; padding: 0 5px;"> 
+                            <div class="flex flex-col items-center"> 
+                                <p class="font-medium text-sm text-gray-600">{{ item.dt | format_forecast_time(forecast.city.timezone) }}</p> 
+                                <span class="text-2xl my-2">{{ item.weather[0].main | weather_icon | safe }}</span> 
+                                <p class="font-bold text-lg">{{ "%.0f"|format(item.main.temp) }}&deg;</p> 
+                                <div class="flex items-center text-sm text-blue-500 mt-1"> 
+                                    <span class="mr-1">&#128167;</span> 
+                                    <span>{{ "%.0f"|format(item['pop'] * 100) }}%</span> 
+                                </div> 
+                            </div> 
+                        </td> 
+                        {% endfor %} 
+                    </tr> 
+                </tbody> 
+            </table> 
+        </div> 
+    </div> 
+</body> 
 </html>
